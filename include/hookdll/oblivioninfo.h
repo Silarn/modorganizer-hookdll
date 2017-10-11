@@ -17,43 +17,38 @@ You should have received a copy of the GNU General Public License
 along with Mod Organizer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FALLOUT3INFO_H
-#define FALLOUT3INFO_H
+#ifndef OBLIVIONINFO_H
+#define OBLIVIONINFO_H
 
 #include "gameinfo.h"
 
 namespace MOShared {
 
+class OblivionInfo : public GameInfo {
 
-class Fallout3Info : public GameInfo
-{
+    friend class GameInfo;
 
-  friend class GameInfo;
+  public:
+    virtual ~OblivionInfo() {}
 
-public:
+    static std::wstring getRegPathStatic();
+    virtual std::wstring getRegPath() const { return getRegPathStatic(); }
 
-  virtual ~Fallout3Info() {}
+    // file name of this games ini (no path)
+    virtual std::vector<std::wstring> getIniFileNames() const;
 
-  static std::wstring getRegPathStatic();
-  virtual std::wstring getRegPath() const { return getRegPathStatic(); }
+    virtual std::wstring getReferenceDataFile() const;
 
-  // file name of this games ini (no path)
-  virtual std::vector<std::wstring> getIniFileNames() const;
+    virtual bool rerouteToProfile(const wchar_t* fileName, const wchar_t* fullPath) const;
 
-  virtual std::wstring getReferenceDataFile() const;
+    virtual std::wstring archiveListKey() const { return L"SArchiveList"; }
 
-  virtual bool rerouteToProfile(const wchar_t *fileName, const wchar_t *fullPath) const;
+  private:
+    OblivionInfo(const std::wstring& gameDirectory);
 
-  virtual std::wstring archiveListKey() const { return L"SArchiveList"; }
-
-private:
-
-  Fallout3Info(const std::wstring &gameDirectory);
-
-  static bool identifyGame(const std::wstring &searchPath);
-
+    static bool identifyGame(const std::wstring& searchPath);
 };
 
 } // namespace MOShared
 
-#endif // FALLOUT3INFO_H
+#endif // OBLIVIONINFO_H

@@ -17,43 +17,39 @@ You should have received a copy of the GNU General Public License
 along with Mod Organizer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FALLOUTNVINFO_H
-#define FALLOUTNVINFO_H
-
+#ifndef SKYRIMINFO_H
+#define SKYRIMINFO_H
 
 #include "gameinfo.h"
 
 namespace MOShared {
 
+class SkyrimInfo : public GameInfo {
 
-class FalloutNVInfo : public GameInfo
-{
+    friend class GameInfo;
 
-  friend class GameInfo;
+  public:
+    virtual ~SkyrimInfo() {}
 
-public:
+    static std::wstring getRegPathStatic();
+    virtual std::wstring getRegPath() const { return getRegPathStatic(); }
 
-  virtual ~FalloutNVInfo() {}
+    // file name of this games ini (no path)
+    virtual std::vector<std::wstring> getIniFileNames() const;
 
-  static std::wstring getRegPathStatic();
-  virtual std::wstring getRegPath() const { return getRegPathStatic(); }
+    virtual std::wstring getReferenceDataFile() const;
 
-  // file name of this games ini (no path)
-  virtual std::vector<std::wstring> getIniFileNames() const;
+    virtual bool rerouteToProfile(const wchar_t* fileName, const wchar_t* fullPath) const;
 
-  virtual std::wstring getReferenceDataFile() const;
+  private:
+    SkyrimInfo(const std::wstring& gameDirectory);
 
-  virtual bool rerouteToProfile(const wchar_t *fileName, const wchar_t *fullPath) const;
+    static bool identifyGame(const std::wstring& searchPath);
 
-  virtual std::wstring archiveListKey() const { return L"SArchiveList"; }
-
-private:
-
-  FalloutNVInfo(const std::wstring &gameDirectory);
-
-  static bool identifyGame(const std::wstring &searchPath);
+  private:
+    std::wstring m_AppData;
 };
 
 } // namespace MOShared
 
-#endif // FALLOUTNVINFO_H
+#endif // SKYRIMINFO_H
